@@ -1,0 +1,31 @@
+version: '3.9'
+services:
+# Сервис для разворачивания контейнера с базой данных
+#  database:
+#    image: postgres:latest
+#    volumes:
+#      - /var/lib/postgresql/data/
+#    environment:
+#      - POSTGRES_DB=animal-chipization
+#      - POSTGRES_USER=user
+#      - POSTGRES_PASSWORD=password
+# Сервис для разворачивания контейнера с приложением
+#  webapi:
+#    image: webapi
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - database
+# Сервис для разворачивания контейнера с автотестами
+  tests:
+    image: mrexpen/planet_olymp_phase1
+    pull_policy: always
+    ports:
+      - "8090:8080"
+#    depends_on:
+#      - webapi
+    environment:
+      - SERVER_URL=http://host.docker.internal:8080
+      - STAGE=all
+# all - запуск всех тестов из трёх доступных этапов
+# 0, 1 или 2 - запуск тестов для соответствующего этапа
