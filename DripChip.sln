@@ -1,12 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DripChip.WebApi", "DripChip.WebApi\DripChip.WebApi.csproj", "{66AFB71D-3723-472F-B574-349317A92B70}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DripChip.WebApi", "src\DripChip.WebApi\DripChip.WebApi.csproj", "{66AFB71D-3723-472F-B574-349317A92B70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DripChip.Entities", "DripChip.Entities\DripChip.Entities.csproj", "{F39591E2-DDC2-4D16-BC7B-ED48B148CEC1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DripChip.Entities", "src\DripChip.Entities\DripChip.Entities.csproj", "{F39591E2-DDC2-4D16-BC7B-ED48B148CEC1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DripChip.Domain", "DripChip.Domain\DripChip.Domain.csproj", "{0B6C2488-C8C6-4FC1-B029-DC14A4048592}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DripChip.Domain", "src\DripChip.Domain\DripChip.Domain.csproj", "{0B6C2488-C8C6-4FC1-B029-DC14A4048592}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DripChip.Persistanse", "DripChip.Persistanse\DripChip.Persistanse.csproj", "{A3C2D633-9DCE-4410-9BD8-09B4445DF5A5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DripChip.Persistanse", "src\DripChip.Persistanse\DripChip.Persistanse.csproj", "{A3C2D633-9DCE-4410-9BD8-09B4445DF5A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
