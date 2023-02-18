@@ -1,13 +1,17 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+﻿FROM mcr.microsoft.com/dotnet/aspnet:7.0-alpine3.17 AS base
+RUN apk update && apk add curl # For health check
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["DripChip.WebApi/DripChip.WebApi.csproj", "DripChip.WebApi/"]
+COPY ["../DripChip.Domain/DripChip.Domain.csproj", "DripChip.Domain/"]
+COPY ["../DripChip.Entities/DripChip.Entities.csproj", "DripChip.Entities/"]
+COPY ["../DripChip.Persistanse/DripChip.Persistanse.csproj", "DripChip.Persistanse/"]
+COPY ["../DripChip.WebApi/DripChip.WebApi.csproj", "DripChip.WebApi/"]
 RUN dotnet restore "DripChip.WebApi/DripChip.WebApi.csproj"
-COPY . .
+COPY ../ .
 WORKDIR "/src/DripChip.WebApi"
 RUN dotnet build "DripChip.WebApi.csproj" -c Release -o /app/build
 

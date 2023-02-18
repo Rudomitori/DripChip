@@ -25,6 +25,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddHealthChecks();
 builder.Services.Configure<JsonOptions>(options =>
 {
     options.JsonSerializerOptions.Converters.Add(
@@ -177,6 +178,7 @@ using (var serviceScope = app.Services.CreateScope())
     await appDbContext.Database.EnsureCreatedAsync();
 }
 
+app.MapHealthChecks("/health");
 app.UseExceptionHandler();
 
 app.UseSerilogRequestLogging(options =>
