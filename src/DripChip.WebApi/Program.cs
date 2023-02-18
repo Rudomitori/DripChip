@@ -8,9 +8,9 @@ using DripChip.Persistence;
 using DripChip.WebApi;
 using DripChip.WebApi.Utils;
 using FluentValidation;
+using Hellang.Middleware.ProblemDetails;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -33,50 +33,36 @@ builder.Services.Configure<JsonOptions>(options =>
     );
 });
 
-builder.Services.AddProblemDetails(options =>
-{
-    options.CustomizeProblemDetails = context =>
+ProblemDetailsExtensions.AddProblemDetails(
+    builder.Services,
+    options =>
     {
-        var httpContext = context.HttpContext;
-        var problemDetails = context.ProblemDetails;
+        options.IncludeExceptionDetails = (ctx, ex) => builder.Environment.IsDevelopment();
 
-        var exceptionHandlerPathFeature = httpContext.Features.Get<IExceptionHandlerPathFeature>();
+        options.MapToStatusCode<NotFoundException>(StatusCodes.Status404NotFound);
+        options.MapToStatusCode<ForbiddenException>(StatusCodes.Status403Forbidden);
+        options.MapToStatusCode<UnauthorizedException>(StatusCodes.Status401Unauthorized);
+        options.MapToStatusCode<ConflictException>(StatusCodes.Status409Conflict);
+        options.MapToStatusCode<InternalException>(StatusCodes.Status500InternalServerError);
 
-        if (exceptionHandlerPathFeature?.Error is NotFoundException notFoundException)
-        {
-            problemDetails.Status = StatusCodes.Status404NotFound;
-            problemDetails.Title = notFoundException.Message;
-            httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
-        }
-        else if (exceptionHandlerPathFeature?.Error is ValidationException validationException)
-        {
-            problemDetails.Status = httpContext.Response.StatusCode =
-                StatusCodes.Status400BadRequest;
+        options.Map<ValidationException>(
+            (ctx, ex) =>
+            {
+                var factory = ctx.RequestServices.GetRequiredService<ProblemDetailsFactory>();
 
-            problemDetails.Title = validationException.Message;
-            problemDetails.Extensions["errors"] = validationException.Errors
-                .GroupBy(x => x.PropertyName)
-                .ToDictionary(x => x.Key, x => string.Join("; ", x.Select(x => x.ErrorMessage)));
-        }
-        else if (exceptionHandlerPathFeature?.Error is ConflictException conflictException)
-        {
-            problemDetails.Status = httpContext.Response.StatusCode = StatusCodes.Status409Conflict;
-            problemDetails.Title = conflictException.Message;
-        }
-        else if (exceptionHandlerPathFeature?.Error is ForbiddenException forbiddenException)
-        {
-            problemDetails.Status = httpContext.Response.StatusCode =
-                StatusCodes.Status403Forbidden;
-            problemDetails.Title = forbiddenException.Message;
-        }
-        else if (exceptionHandlerPathFeature?.Error is UnauthorizedException unauthorizedException)
-        {
-            problemDetails.Status = httpContext.Response.StatusCode =
-                StatusCodes.Status401Unauthorized;
-            problemDetails.Title = unauthorizedException.Message;
-        }
-    };
-});
+                var errors = ex.Errors
+                    .GroupBy(x => x.PropertyName)
+                    .ToDictionary(x => x.Key, x => x.Select(x => x.ErrorMessage).ToArray());
+
+                return factory.CreateValidationProblemDetails(
+                    ctx,
+                    errors,
+                    StatusCodes.Status400BadRequest
+                );
+            }
+        );
+    }
+);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -179,7 +165,6 @@ using (var serviceScope = app.Services.CreateScope())
 }
 
 app.MapHealthChecks("/health");
-app.UseExceptionHandler();
 
 app.UseSerilogRequestLogging(options =>
 {
@@ -188,6 +173,8 @@ app.UseSerilogRequestLogging(options =>
         context.Set("RemoteIp", httpContext.Connection.RemoteIpAddress);
     };
 });
+
+app.UseProblemDetails();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
