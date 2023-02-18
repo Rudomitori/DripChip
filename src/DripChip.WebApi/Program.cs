@@ -179,7 +179,6 @@ using (var serviceScope = app.Services.CreateScope())
 }
 
 app.MapHealthChecks("/health");
-app.UseExceptionHandler();
 
 app.UseSerilogRequestLogging(options =>
 {
@@ -188,6 +187,8 @@ app.UseSerilogRequestLogging(options =>
         context.Set("RemoteIp", httpContext.Connection.RemoteIpAddress);
     };
 });
+
+app.UseExceptionHandler();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

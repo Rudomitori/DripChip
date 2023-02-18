@@ -29,8 +29,4 @@
       <ProjectReference Include="..\DripChip.Persistanse\DripChip.Persistanse.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="logs" />
-    </ItemGroup>
-
 </Project>
