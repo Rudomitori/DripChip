@@ -67,7 +67,7 @@ public sealed class LoggingPipelineBehaviour<TRequest, TResponse>
         {
             stopwatch.Stop();
 
-            _logger.LogError(
+            _logger.LogWarning(
                 "Exception occurred while executing request \"{requestType}\". Elapsed: {elapsed} ms.",
                 request.GetType().Name,
                 stopwatch.ElapsedMilliseconds
@@ -79,7 +79,7 @@ public sealed class LoggingPipelineBehaviour<TRequest, TResponse>
         {
             stopwatch.Stop();
 
-            _logger.LogError(
+            _logger.LogWarning(
                 "Exception occurred while executing request \"{requestType}\". Elapsed: {elapsed} ms.",
                 request.GetType().Name,
                 stopwatch.ElapsedMilliseconds
