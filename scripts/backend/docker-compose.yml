@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  backend:
+    build:
+      context: ../../src
+      dockerfile: DripChip.WebApi/Dockerfile
+    healthcheck:
+      test: curl --fail http://localhost/health || exit
+      interval: 5s
+      timeout: 2s
+      retries: 5
