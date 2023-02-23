@@ -1,19 +1,10 @@
 version: '3.9'
 services:
-  db:
-    extends:
-      service: db
-      file: ../postgres/docker-compose.yml
-  backend:
-    extends:
-      service: backend
-      file: ../backend/docker-compose.yml
+  # db must be added by overriding with docker-compose file from "postgres" folder
+  backend: # Must be overriden with docker-compose files from "backend" folder
     depends_on:
       db:
         condition: service_healthy
-    expose:
-      - "80"
-      - "443"
     ports:
       - "8080:80"
       - "8081:443"
