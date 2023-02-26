@@ -1,6 +1,6 @@
 using Common.Core.Configuration;
 
-namespace DripChip.WebApi.Configuration;
+namespace DripChip.WebApi.Setup.Logging;
 
 public sealed class SerilogSelfLogOptions : IPositionedOptions
 {
