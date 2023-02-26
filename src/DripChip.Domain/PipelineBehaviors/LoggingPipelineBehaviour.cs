@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using DripChip.Domain.Exceptions;
+using Common.Domain.Exceptions;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;

@@ -1,4 +1,4 @@
-﻿using DripChip.Domain.Exceptions;
+﻿using Common.Domain.Exceptions;
 using DripChip.Entities;
 using FluentValidation;
 using MediatR;

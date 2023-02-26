@@ -1,4 +1,5 @@
-﻿using DripChip.Domain.Exceptions;
+﻿using Common.Domain.Exceptions;
+using Common.Domain.ValidationRules;
 using DripChip.Entities;
 using FluentValidation;
 using MediatR;
@@ -61,7 +62,7 @@ public sealed class DeleteAnimalType : IRequest<DeleteAnimalType.Response>
     {
         public Validator()
         {
-            RuleFor(x => x.Id).GreaterThan(0);
+            RuleFor(x => x.Id).IsValidId();
         }
     }
 }

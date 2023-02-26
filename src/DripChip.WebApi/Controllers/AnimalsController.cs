@@ -1,5 +1,5 @@
-﻿using DripChip.Domain.Animals;
-using DripChip.Domain.Exceptions;
+﻿using Common.Domain.Exceptions;
+using DripChip.Domain.Animals;
 using DripChip.Domain.LocationVisits;
 using DripChip.Entities;
 using DripChip.WebApi.ApiModel;

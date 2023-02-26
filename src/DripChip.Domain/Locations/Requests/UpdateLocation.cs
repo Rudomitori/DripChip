@@ -1,4 +1,5 @@
-﻿using DripChip.Domain.Exceptions;
+﻿using Common.Domain.Exceptions;
+using Common.Domain.ValidationRules;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -69,7 +70,7 @@ public sealed class UpdateLocation : IRequest<UpdateLocation.Response>
     {
         public Validator()
         {
-            RuleFor(x => x.Id).GreaterThan(0);
+            RuleFor(x => x.Id).IsValidId();
 
             RuleFor(x => x.Coordinates)
                 .Must(x => x.IsValid)

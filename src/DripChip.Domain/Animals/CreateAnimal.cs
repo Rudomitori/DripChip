@@ -1,5 +1,6 @@
-﻿using DripChip.Domain.Exceptions;
-using DripChip.Domain.Utils;
+﻿using Common.Core.Clock;
+using Common.Domain.Exceptions;
+using Common.Domain.ValidationRules;
 using DripChip.Entities;
 using FluentValidation;
 using MediatR;
@@ -95,12 +96,12 @@ public class CreateAnimal : IRequest<CreateAnimal.Response>
         public Validator()
         {
             RuleFor(x => x.AnimalTypeIds).NotEmpty();
-            RuleForEach(x => x.AnimalTypeIds).GreaterThan(0);
+            RuleForEach(x => x.AnimalTypeIds).IsValidId();
             RuleFor(x => x.Weight).GreaterThan(0);
             RuleFor(x => x.Length).GreaterThan(0);
             RuleFor(x => x.Height).GreaterThan(0);
-            RuleFor(x => x.ChipperId).GreaterThan(0);
-            RuleFor(x => x.ChippingLocationId).GreaterThan(0);
+            RuleFor(x => x.ChipperId).IsValidId();
+            RuleFor(x => x.ChippingLocationId).IsValidId();
         }
     }
 }

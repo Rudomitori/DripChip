@@ -1,4 +1,5 @@
-﻿using DripChip.Entities;
+﻿using Common.Domain.ValidationRules;
+using DripChip.Entities;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -50,7 +51,7 @@ public sealed class GetAnimalTypes : IRequest<GetAnimalTypes.Response>
         public Validator()
         {
             RuleFor(x => x.Ids).NotEmpty().When(x => x.Ids is { });
-            RuleForEach(x => x.Ids).GreaterThan(0).When(x => x.Ids is { });
+            RuleForEach(x => x.Ids).IsValidId().When(x => x.Ids is { });
 
             RuleFor(x => x.Type).NotEmpty().When(x => x.Type is { });
         }

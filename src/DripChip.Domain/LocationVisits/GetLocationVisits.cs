@@ -1,6 +1,6 @@
-﻿using System.Data;
-using DripChip.Domain.Exceptions;
-using DripChip.Domain.Utils;
+﻿using Common.Core.Extensions;
+using Common.Domain.Exceptions;
+using Common.Domain.ValidationRules;
 using DripChip.Entities;
 using FluentValidation;
 using MediatR;
@@ -74,9 +74,9 @@ public sealed class GetLocationVisits : IRequest<GetLocationVisits.Response>
     {
         public Validator()
         {
-            RuleFor(x => x.VisitedByAnimalId).GreaterThan(0).When(x => x.VisitedByAnimalId is { });
+            RuleFor(x => x.VisitedByAnimalId).IsValidId().When(x => x.VisitedByAnimalId is { });
             RuleFor(x => x.Offset).GreaterThanOrEqualTo(0);
-            RuleFor(x => x.Size).GreaterThan(0);
+            RuleFor(x => x.Size).IsValidId();
         }
     }
 }

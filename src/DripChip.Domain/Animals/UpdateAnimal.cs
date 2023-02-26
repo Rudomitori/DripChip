@@ -1,7 +1,7 @@
-﻿using System.Data;
-using System.Diagnostics;
-using DripChip.Domain.Exceptions;
-using DripChip.Domain.Utils;
+﻿using System.Diagnostics;
+using Common.Core.Clock;
+using Common.Domain.Exceptions;
+using Common.Domain.ValidationRules;
 using DripChip.Entities;
 using FluentValidation;
 using MediatR;
@@ -70,7 +70,7 @@ public class UpdateAnimal : IRequest<UpdateAnimal.Response>
 
             if (request.ChippingLocationId is { } chippingLocationId)
             {
-                if (animal.LocationVisits.FirstOrDefault()?.LocationId == chippingLocationId)
+                if (animal.LocationVisits!.FirstOrDefault()?.LocationId == chippingLocationId)
                     throw new ValidationException(
                         "The animal's first visited location has id that equals to new chipping location id"
                     );
@@ -166,19 +166,19 @@ public class UpdateAnimal : IRequest<UpdateAnimal.Response>
     {
         public Validation()
         {
-            RuleFor(x => x.Id).GreaterThan(0);
+            RuleFor(x => x.Id).IsValidId();
             RuleFor(x => x.Weight).GreaterThan(0);
             RuleFor(x => x.Height).GreaterThan(0);
             RuleFor(x => x.Length).GreaterThan(0);
-            RuleFor(x => x.ChipperId).GreaterThan(0);
-            RuleFor(x => x.ChippingLocationId).GreaterThan(0);
+            RuleFor(x => x.ChipperId).IsValidId();
+            RuleFor(x => x.ChippingLocationId).IsValidId();
             RuleFor(x => x.AnimalTypeIdsToAdd)
                 .NotEmpty()
-                .ForEach(x => x.GreaterThan(0))
+                .ForEach(x => x.IsValidId())
                 .When(x => x.AnimalTypeIdsToAdd is { });
             RuleFor(x => x.AnimalTypeIdsToRemove)
                 .NotEmpty()
-                .ForEach(x => x.GreaterThan(0))
+                .ForEach(x => x.IsValidId())
                 .When(x => x.AnimalTypeIdsToRemove is { });
             RuleFor(x => x.AnimalTypeIdsToAdd)
                 .Must(

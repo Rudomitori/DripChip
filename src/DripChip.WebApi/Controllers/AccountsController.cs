@@ -1,5 +1,5 @@
-﻿using DripChip.Domain.Accounts;
-using DripChip.Domain.Exceptions;
+﻿using Common.Domain.Exceptions;
+using DripChip.Domain.Accounts;
 using DripChip.WebApi.ApiModel;
 using DripChip.WebApi.Utils;
 using MediatR;

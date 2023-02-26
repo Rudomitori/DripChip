@@ -1,4 +1,5 @@
-﻿using DripChip.Domain.Exceptions;
+﻿using Common.Domain.Exceptions;
+using Common.Domain.ValidationRules;
 using DripChip.Entities;
 using FluentValidation;
 using MediatR;
@@ -91,9 +92,9 @@ public sealed class UpdateLocationVisit : IRequest<UpdateLocationVisit.Response>
     {
         public Validator()
         {
-            RuleFor(x => x.Id).GreaterThan(0);
-            RuleFor(x => x.AnimalId).GreaterThan(0);
-            RuleFor(x => x.LocationId).GreaterThan(0);
+            RuleFor(x => x.Id).IsValidId();
+            RuleFor(x => x.AnimalId).IsValidId();
+            RuleFor(x => x.LocationId).IsValidId();
         }
     }
 }

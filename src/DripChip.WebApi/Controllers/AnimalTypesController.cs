@@ -1,5 +1,5 @@
-﻿using DripChip.Domain.AnimalTypes;
-using DripChip.Domain.Exceptions;
+﻿using Common.Domain.Exceptions;
+using DripChip.Domain.AnimalTypes;
 using DripChip.WebApi.ApiModel;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

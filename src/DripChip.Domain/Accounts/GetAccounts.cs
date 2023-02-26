@@ -1,4 +1,5 @@
-﻿using DripChip.Domain.Utils;
+﻿using Common.Core.Extensions;
+using Common.Domain.ValidationRules;
 using DripChip.Entities;
 using FluentValidation;
 using MediatR;
@@ -69,10 +70,10 @@ public sealed class GetAccounts : IRequest<GetAccounts.Response>
         public Validator()
         {
             RuleFor(x => x.Ids).NotEmpty().When(x => x.Ids is { });
-            RuleForEach(x => x.Ids).GreaterThan(0).When(x => x.Ids is { });
+            RuleForEach(x => x.Ids).IsValidId().When(x => x.Ids is { });
 
             RuleFor(x => x.Offset).GreaterThanOrEqualTo(0);
-            RuleFor(x => x.Size).GreaterThan(0);
+            RuleFor(x => x.Size).IsValidId();
         }
     }
 }

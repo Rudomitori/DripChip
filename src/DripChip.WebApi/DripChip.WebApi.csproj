@@ -30,6 +30,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Common\Common.AspNetCore\Common.AspNetCore.csproj" />
+      <ProjectReference Include="..\Common\Common.Core\Common.Core.csproj" />
       <ProjectReference Include="..\DripChip.Domain\DripChip.Domain.csproj" />
       <ProjectReference Include="..\DripChip.Entities\DripChip.Entities.csproj" />
       <ProjectReference Include="..\DripChip.Persistanse\DripChip.Persistanse.csproj" />
