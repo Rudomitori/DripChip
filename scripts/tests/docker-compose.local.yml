@@ -1,0 +1,5 @@
+version: '3.9'
+services:
+  tests:
+    environment:
+      - SERVER_URL=http://host.docker.internal:8080

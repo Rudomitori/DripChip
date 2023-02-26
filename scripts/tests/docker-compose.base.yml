@@ -1,0 +1,11 @@
+version: '3.9'
+services:
+  tests:
+    image: mrexpen/planet_olymp_phase1
+    pull_policy: always
+    ports:
+      - "8090:8080"
+    environment:
+      - STAGE=all
+        # all - запуск всех тестов из трёх доступных этапов
+        # 0, 1 или 2 - запуск тестов для соответствующего этапа
