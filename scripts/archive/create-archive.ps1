@@ -27,11 +27,11 @@ docker compose `
     -f (Join-Path $repositoryRootPath "scripts/tests/docker-compose.build.yml") `
     -f (Join-Path $repositoryRootPath "scripts/postgres/docker-compose.yml") `
     -f (Join-Path $repositoryRootPath "scripts/backend/docker-compose.base.yml") `
-    -f (Join-Path $repositoryRootPath "scripts/backend/docker-compose.build.yml") `
+    -f (Join-Path $repositoryRootPath "scripts/archive/assets/docker-compose.yml") `
     config > (Join-Path $buildFolder "docker-compose.yml")
 
-Copy-Item (Join-Path $repositoryRootPath "scripts/build/assets/*")`
-    -Destination ${buildFolder}
+Copy-Item (Join-Path $repositoryRootPath "scripts/archive/assets/run-tests.ps1")`
+    -Destination (Join-Path $buildFolder "run-tests.ps1")
 
 Compress-Archive `
     -Path (Join-Path $tempWorkDirPath "*") `
