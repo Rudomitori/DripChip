@@ -23,7 +23,8 @@ docker build -t $imageName `
 docker save $imageName --output (Join-Path $buildFolder "${imageName}.tar")
 
 docker compose `
-    -f (Join-Path $repositoryRootPath "scripts/tests/docker-compose.yml") `
+    -f (Join-Path $repositoryRootPath "scripts/tests/docker-compose.base.yml") `
+    -f (Join-Path $repositoryRootPath "scripts/tests/docker-compose.build.yml") `
     -f (Join-Path $repositoryRootPath "scripts/postgres/docker-compose.yml") `
     -f (Join-Path $repositoryRootPath "scripts/backend/docker-compose.base.yml") `
     -f (Join-Path $repositoryRootPath "scripts/backend/docker-compose.build.yml") `

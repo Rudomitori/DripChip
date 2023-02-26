@@ -6,6 +6,7 @@ using DripChip.Domain.Utils;
 using DripChip.Entities;
 using DripChip.Persistence;
 using DripChip.WebApi;
+using DripChip.WebApi.Configuration;
 using DripChip.WebApi.Utils;
 using FluentValidation;
 using Hellang.Middleware.ProblemDetails;
@@ -13,11 +14,14 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using NetTopologySuite;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using Serilog;
+using Serilog.Debugging;
+using Serilog.Sinks.Elasticsearch;
 using JsonOptions = Microsoft.AspNetCore.Mvc.JsonOptions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -100,10 +104,68 @@ builder.Services.AddSwaggerGen(options =>
     );
 });
 
+builder.Services.Configure<OpenSearchLoggingOptions>(
+    builder.Configuration.GetSection(OpenSearchLoggingOptions.Position)
+);
+
+builder.Services.Configure<SerilogSelfLogOptions>(
+    builder.Configuration.GetSection(SerilogSelfLogOptions.Position)
+);
+
+var serilogSelfLogOptions = new SerilogSelfLogOptions();
+builder.Configuration.GetSection(SerilogSelfLogOptions.Position).Bind(serilogSelfLogOptions);
+
+if (serilogSelfLogOptions.IsEnabled)
+{
+    Directory.CreateDirectory(Path.GetDirectoryName(serilogSelfLogOptions.FilePath!)!);
+
+    var streamWriter = File.Exists(serilogSelfLogOptions.FilePath)
+        ? new StreamWriter(File.OpenWrite(serilogSelfLogOptions.FilePath))
+        : File.CreateText(serilogSelfLogOptions.FilePath!);
+
+    SelfLog.Enable(TextWriter.Synchronized(streamWriter));
+}
+
 builder.Host.UseSerilog(
     (context, provider, configuration) =>
     {
         configuration.ReadFrom.Services(provider).ReadFrom.Configuration(context.Configuration);
+
+        var openSearchLoggingOptions = provider
+            .GetRequiredService<IOptions<OpenSearchLoggingOptions>>()
+            .Value;
+        if (openSearchLoggingOptions.IsEnabled)
+        {
+            var elasticsearchSinkOptions = new ElasticsearchSinkOptions(
+                new Uri(openSearchLoggingOptions.Uri!)
+            )
+            {
+                BatchPostingLimit = openSearchLoggingOptions.BatchPostingLimit,
+                AutoRegisterTemplate = true,
+                TemplateName = openSearchLoggingOptions.Template,
+                IndexFormat = $"{openSearchLoggingOptions.Template!.ToLower()}--{{0:yyyy.MM.dd}}",
+                RegisterTemplateFailure = RegisterTemplateRecovery.FailSink,
+                TypeName = null,
+                EmitEventFailure = EmitEventFailureHandling.WriteToSelfLog,
+            };
+
+            elasticsearchSinkOptions.ModifyConnectionSettings = c =>
+            {
+                c.BasicAuthentication(
+                    openSearchLoggingOptions.User,
+                    openSearchLoggingOptions.Password
+                );
+
+                // Quick fix of error with self signed certificates
+                // Source: https://github.com/serilog-contrib/serilog-sinks-elasticsearch/issues/384#issuecomment-861645387
+                if (openSearchLoggingOptions.SkipSslCheck)
+                    c.ConnectionLimit(-1).ServerCertificateValidationCallback((_, _, _, _) => true);
+
+                return c;
+            };
+
+            configuration.WriteTo.Elasticsearch(elasticsearchSinkOptions);
+        }
     }
 );
 

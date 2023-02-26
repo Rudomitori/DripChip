@@ -15,6 +15,11 @@
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.1" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.1" />
         <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
+        <!-- 
+        In v9 there is a product check to ensure that library is used  
+        exact with Elasticsearch but not with OpenSearch.
+        -->
+        <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="8.4.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     </ItemGroup>
 

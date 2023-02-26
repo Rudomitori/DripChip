@@ -11,15 +11,8 @@ services:
     environment:
       ConnectionStrings__Default: Host=db;Username=postgres;Password=postgres;Database=DripChip
   tests:
-    image: mrexpen/planet_olymp_phase1
-    pull_policy: always
-    ports:
-      - "8090:8080"
     depends_on:
       backend:
         condition: service_healthy
     environment:
       - SERVER_URL=http://backend
-      - STAGE=all
-        # all - запуск всех тестов из трёх доступных этапов
-        # 0, 1 или 2 - запуск тестов для соответствующего этапа
