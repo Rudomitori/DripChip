@@ -1,4 +1,4 @@
-﻿namespace DripChip.Domain.Utils;
+﻿namespace Common.Core.Clock;
 
 public interface IClock
 {

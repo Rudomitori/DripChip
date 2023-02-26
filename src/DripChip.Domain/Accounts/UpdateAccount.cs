@@ -1,4 +1,5 @@
-﻿using DripChip.Domain.Exceptions;
+﻿using Common.Domain.Exceptions;
+using Common.Domain.ValidationRules;
 using DripChip.Entities;
 using FluentValidation;
 using FluentValidation.Results;
@@ -26,7 +27,7 @@ public sealed class UpdateAccount : IRequest<UpdateAccount.Response>
     {
         public Validator()
         {
-            RuleFor(x => x.Id).GreaterThan(0);
+            RuleFor(x => x.Id).IsValidId();
             RuleFor(x => x.FirstName).NotEmpty();
             RuleFor(x => x.LastName).NotEmpty();
             RuleFor(x => x.Email).NotEmpty().EmailAddress();

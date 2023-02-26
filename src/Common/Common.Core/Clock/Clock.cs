@@ -1,6 +1,4 @@
-﻿using DripChip.Domain.Utils;
-
-namespace DripChip.WebApi.Utils;
+﻿namespace Common.Core.Clock;
 
 // Source: https://stackoverflow.com/a/153014
 public sealed class Clock : IClock

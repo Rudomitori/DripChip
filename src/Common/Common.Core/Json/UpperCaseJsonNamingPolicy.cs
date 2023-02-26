@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace DripChip.WebApi.Utils;
+namespace Common.Core.Json;
 
 public sealed class UpperCaseJsonNamingPolicy : JsonNamingPolicy
 {

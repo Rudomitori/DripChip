@@ -1,9 +1,10 @@
-﻿using DripChip.Entities;
+﻿using Common.Domain.ValidationRules;
+using DripChip.Entities;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace DripChip.Domain.Locations;
+namespace DripChip.Domain.Locations.Requests;
 
 public sealed class GetLocations : IRequest<GetLocations.Responce>
 {
@@ -46,7 +47,7 @@ public sealed class GetLocations : IRequest<GetLocations.Responce>
         public Validator()
         {
             RuleFor(x => x.Ids).NotEmpty().When(x => x.Ids is { });
-            RuleForEach(x => x.Ids).GreaterThan(0).When(x => x.Ids is { });
+            RuleForEach(x => x.Ids).IsValidId().When(x => x.Ids is { });
         }
     }
 }

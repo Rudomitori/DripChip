@@ -1,4 +1,4 @@
-﻿namespace DripChip.Domain.Exceptions;
+﻿namespace Common.Domain.Exceptions;
 
 public sealed class ForbiddenException : DomainExceptionBase
 {

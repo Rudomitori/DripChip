@@ -1,4 +1,5 @@
-﻿using DripChip.Domain.Exceptions;
+﻿using Common.Domain.Exceptions;
+using Common.Domain.ValidationRules;
 using DripChip.Entities;
 using FluentValidation;
 using FluentValidation.Results;
@@ -22,7 +23,7 @@ public sealed class DeleteAccount : IRequest<DeleteAccount.Response>
     {
         public Validator()
         {
-            RuleFor(x => x.Id).GreaterThan(0);
+            RuleFor(x => x.Id).IsValidId();
         }
     }
 

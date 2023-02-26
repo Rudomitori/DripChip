@@ -1,13 +1,14 @@
 using System.Text.Json.Serialization;
+using Common.Core.Clock;
+using Common.Core.Configuration;
+using Common.Core.Json;
+using Common.Domain.Exceptions;
 using DripChip.Domain.Accounts;
-using DripChip.Domain.Exceptions;
 using DripChip.Domain.PipelineBehaviors;
-using DripChip.Domain.Utils;
 using DripChip.Entities;
 using DripChip.Persistence;
 using DripChip.WebApi;
 using DripChip.WebApi.Configuration;
-using DripChip.WebApi.Utils;
 using FluentValidation;
 using Hellang.Middleware.ProblemDetails;
 using MediatR;
@@ -112,8 +113,7 @@ builder.Services.Configure<SerilogSelfLogOptions>(
     builder.Configuration.GetSection(SerilogSelfLogOptions.Position)
 );
 
-var serilogSelfLogOptions = new SerilogSelfLogOptions();
-builder.Configuration.GetSection(SerilogSelfLogOptions.Position).Bind(serilogSelfLogOptions);
+var serilogSelfLogOptions = builder.Configuration.Create<SerilogSelfLogOptions>();
 
 if (serilogSelfLogOptions.IsEnabled)
 {

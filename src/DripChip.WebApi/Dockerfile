@@ -6,11 +6,6 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["../DripChip.Domain/DripChip.Domain.csproj", "DripChip.Domain/"]
-COPY ["../DripChip.Entities/DripChip.Entities.csproj", "DripChip.Entities/"]
-COPY ["../DripChip.Persistanse/DripChip.Persistanse.csproj", "DripChip.Persistanse/"]
-COPY ["../DripChip.WebApi/DripChip.WebApi.csproj", "DripChip.WebApi/"]
-RUN dotnet restore "DripChip.WebApi/DripChip.WebApi.csproj"
 COPY ../ .
 WORKDIR "/src/DripChip.WebApi"
 RUN dotnet build "DripChip.WebApi.csproj" -c Release -o /app/build

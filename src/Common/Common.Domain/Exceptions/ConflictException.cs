@@ -1,4 +1,4 @@
-﻿namespace DripChip.Domain.Exceptions;
+﻿namespace Common.Domain.Exceptions;
 
 public class ConflictException : DomainExceptionBase
 {

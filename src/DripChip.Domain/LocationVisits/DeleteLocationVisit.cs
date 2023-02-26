@@ -1,4 +1,5 @@
-﻿using DripChip.Domain.Exceptions;
+﻿using Common.Domain.Exceptions;
+using Common.Domain.ValidationRules;
 using DripChip.Entities;
 using FluentValidation;
 using MediatR;
@@ -72,8 +73,8 @@ public sealed class DeleteLocationVisit : IRequest<DeleteLocationVisit.Response>
     {
         public Validator()
         {
-            RuleFor(x => x.Id).GreaterThan(0);
-            RuleFor(x => x.AnimalId).GreaterThan(0);
+            RuleFor(x => x.Id).IsValidId();
+            RuleFor(x => x.AnimalId).IsValidId();
         }
     }
 }

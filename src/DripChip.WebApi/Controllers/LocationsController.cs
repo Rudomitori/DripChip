@@ -1,5 +1,4 @@
-﻿using DripChip.Domain.Exceptions;
-using DripChip.Domain.Locations;
+﻿using Common.Domain.Exceptions;
 using DripChip.Domain.Locations.Requests;
 using DripChip.WebApi.ApiModel;
 using MediatR;

@@ -1,8 +1,10 @@
+using Common.Core.Configuration;
+
 namespace DripChip.WebApi.Configuration;
 
-public sealed class OpenSearchLoggingOptions
+public sealed class OpenSearchLoggingOptions : IPositionedOptions
 {
-    public const string Position = "Serilog:OpenSearch";
+    public static string Position => "Serilog:OpenSearch";
     public string? Uri { get; set; }
     public string? Template { get; set; }
     public string? User { get; set; }

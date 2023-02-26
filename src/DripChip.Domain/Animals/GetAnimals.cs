@@ -1,4 +1,5 @@
-﻿using DripChip.Domain.Utils;
+﻿using Common.Core.Extensions;
+using Common.Domain.ValidationRules;
 using DripChip.Entities;
 using FluentValidation;
 using MediatR;
@@ -82,14 +83,14 @@ public sealed class GetAnimals : IRequest<GetAnimals.Response>
         public Validator()
         {
             RuleFor(x => x.Ids).NotEmpty().When(x => x.Ids is { });
-            RuleForEach(x => x.Ids).GreaterThan(0).When(x => x is { });
-            RuleFor(x => x.ChipperId).GreaterThan(0).When(x => x.ChipperId is { });
+            RuleForEach(x => x.Ids).IsValidId().When(x => x is { });
+            RuleFor(x => x.ChipperId).IsValidId().When(x => x.ChipperId is { });
             RuleFor(x => x.ChippingLocationId)
-                .GreaterThan(0)
+                .IsValidId()
                 .When(x => x.ChippingLocationId is { });
 
             RuleFor(x => x.Offset).GreaterThanOrEqualTo(0);
-            RuleFor(x => x.Size).GreaterThan(0);
+            RuleFor(x => x.Size).IsValidId();
         }
     }
 }

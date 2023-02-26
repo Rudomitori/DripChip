@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace DripChip.Domain.Utils;
+namespace Common.Core.Extensions;
 
 public static class LinqExtensions
 {
