@@ -26,9 +26,11 @@ public static class MvcSetup
         app.MapControllers();
     }
 
+    public const string HealthCheckRoute = "/health";
+
     public static void UseHealthCheckSetup(this WebApplication app)
     {
-        app.MapHealthChecks("/health");
+        app.MapHealthChecks(HealthCheckRoute);
     }
 
     public static WebApplicationBuilder SetupSwagger(this WebApplicationBuilder builder)
