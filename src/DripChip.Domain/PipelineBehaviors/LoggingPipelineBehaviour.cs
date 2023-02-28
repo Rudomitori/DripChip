@@ -12,11 +12,11 @@ public sealed class LoggingPipelineBehaviour<TRequest, TResponse>
 {
     #region Constructor and dependencies
 
-    private readonly ILogger<TRequest> _logger;
+    private readonly ILogger _logger;
 
-    public LoggingPipelineBehaviour(ILogger<TRequest> logger)
+    public LoggingPipelineBehaviour(ILoggerFactory loggerFactory)
     {
-        _logger = logger;
+        _logger = loggerFactory.CreateLogger("Domain.LoggingPipelineBehaviour");
     }
 
     #endregion
@@ -28,10 +28,8 @@ public sealed class LoggingPipelineBehaviour<TRequest, TResponse>
         CancellationToken cancellationToken
     )
     {
-        _logger.LogInformation(
-            "Starting execute request \"{requestType}\"",
-            request.GetType().Name
-        );
+        var requestTypeName = request.GetType().Name;
+        _logger.LogDebug("Starting execute request \"{requestType}\"", requestTypeName);
 
         var stopwatch = new Stopwatch();
         stopwatch.Start();
@@ -44,46 +42,37 @@ public sealed class LoggingPipelineBehaviour<TRequest, TResponse>
 
             _logger.LogInformation(
                 "Request \"{requestType}\" was executed successfully. Elapsed: {elapsed} ms.",
-                request.GetType().Name,
+                requestTypeName,
                 stopwatch.ElapsedMilliseconds
             );
 
             return response;
         }
-        catch (InternalException e)
+        catch (Exception e)
         {
             stopwatch.Stop();
 
-            _logger.LogError(
-                e,
-                "Exception occurred while executing request \"{requestType}\". Elapsed: {elapsed} ms.",
-                request.GetType().Name,
-                stopwatch.ElapsedMilliseconds
-            );
+            if (e is InternalException internalException)
+            {
+                _logger.LogError(
+                    internalException.InnerException,
+                    "{exceptionType} occurred while executing request \"{requestType}\". Elapsed: {elapsed} ms.",
+                    e.GetType().Name,
+                    requestTypeName,
+                    stopwatch.ElapsedMilliseconds
+                );
+            }
+            else if (e is ValidationException or DomainExceptionBase)
+            {
+                stopwatch.Stop();
 
-            throw;
-        }
-        catch (ValidationException e)
-        {
-            stopwatch.Stop();
-
-            _logger.LogWarning(
-                "Exception occurred while executing request \"{requestType}\". Elapsed: {elapsed} ms.",
-                request.GetType().Name,
-                stopwatch.ElapsedMilliseconds
-            );
-
-            throw;
-        }
-        catch (DomainExceptionBase e)
-        {
-            stopwatch.Stop();
-
-            _logger.LogWarning(
-                "Exception occurred while executing request \"{requestType}\". Elapsed: {elapsed} ms.",
-                request.GetType().Name,
-                stopwatch.ElapsedMilliseconds
-            );
+                _logger.LogWarning(
+                    "{exceptionType} occurred while executing request \"{requestType}\". Elapsed: {elapsed} ms.",
+                    e.GetType().Name,
+                    requestTypeName,
+                    stopwatch.ElapsedMilliseconds
+                );
+            }
 
             throw;
         }

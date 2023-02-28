@@ -18,16 +18,11 @@ public class ExceptionHandlingBehaviour<TRequest, TResponse>
         {
             return next();
         }
-        catch (DomainExceptionBase e)
-        {
-            throw;
-        }
-        catch (ValidationException e)
-        {
-            throw;
-        }
         catch (Exception e)
         {
+            if (e is DomainExceptionBase or ValidationException)
+                throw;
+
             throw new InternalException("Unexpected exception occurred", e);
         }
     }
