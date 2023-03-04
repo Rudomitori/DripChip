@@ -1,6 +1,7 @@
 ﻿using Common.Core.Extensions;
 using Common.Domain.Exceptions;
 using Common.Domain.ValidationRules;
+using DripChip.Domain.Requests;
 using DripChip.Entities;
 using FluentValidation;
 using MediatR;
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DripChip.Domain.LocationVisits;
 
-public sealed class GetLocationVisits : IRequest<GetLocationVisits.Response>
+public sealed class GetLocationVisits : RequestBase<GetLocationVisits.Response>
 {
     public long? VisitedByAnimalId { get; set; }
     public DateTime? MinVisitedAt { get; set; }

@@ -1,4 +1,5 @@
 ﻿using Common.Domain.ValidationRules;
+using DripChip.Domain.Requests;
 using DripChip.Entities;
 using FluentValidation;
 using MediatR;
@@ -6,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DripChip.Domain.Locations.Requests;
 
-public sealed class GetLocations : IRequest<GetLocations.Responce>
+public sealed class GetLocations : RequestBase<GetLocations.Responce>
 {
     public List<long>? Ids { get; set; }
 

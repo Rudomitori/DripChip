@@ -1,4 +1,5 @@
 ﻿using Common.Domain.Exceptions;
+using DripChip.Domain.Requests;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,7 @@ using Location = DripChip.Entities.Location;
 
 namespace DripChip.Domain.Locations.Requests;
 
-public sealed class CreateLocation : IRequest<CreateLocation.Response>
+public sealed class CreateLocation : RequestBase<CreateLocation.Response>
 {
     public required Point Coordinates { get; set; }
 

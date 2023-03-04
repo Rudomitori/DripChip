@@ -1,7 +1,6 @@
 ﻿using Common.Domain.Exceptions;
 using DripChip.Domain.Accounts;
 using DripChip.WebApi.ApiModel;
-using DripChip.WebApi.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -80,7 +79,6 @@ public sealed class AccountsController : ControllerBase
             new UpdateAccount
             {
                 Id = accountId,
-                CurrentAccountId = this.GetUserId().Value,
                 Email = dto.Email,
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
@@ -103,8 +101,6 @@ public sealed class AccountsController : ControllerBase
     [HttpDelete("{accountId:int}")]
     public async Task DeleteAccount(int accountId)
     {
-        await _mediator.Send(
-            new DeleteAccount { Id = accountId, CurrentAccountId = this.GetUserId().Value }
-        );
+        await _mediator.Send(new DeleteAccount { Id = accountId });
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Common.Domain.Exceptions;
+using DripChip.Domain.Requests;
 using DripChip.Entities;
 using FluentValidation;
 using MediatR;
@@ -6,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DripChip.Domain.AnimalTypes;
 
-public sealed class CreateAnimalType : IRequest<CreateAnimalType.Response>
+public sealed class CreateAnimalType : RequestBase<CreateAnimalType.Response>
 {
     public required string Type { get; set; }
 

@@ -10,6 +10,7 @@ public static class MvcSetup
     public static WebApplicationBuilder SetupControllers(this WebApplicationBuilder builder)
     {
         builder.Services.AddControllers();
+        builder.Services.AddHttpContextAccessor();
         builder.Services.AddHealthChecks();
         builder.Services.Configure<JsonOptions>(options =>
         {

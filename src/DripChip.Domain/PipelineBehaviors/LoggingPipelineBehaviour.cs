@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Common.Domain.Exceptions;
+using DripChip.Domain.Requests;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -8,7 +9,7 @@ namespace DripChip.Domain.PipelineBehaviors;
 
 public sealed class LoggingPipelineBehaviour<TRequest, TResponse>
     : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IRequest<TResponse>
+    where TRequest : RequestBase<TResponse>
 {
     #region Constructor and dependencies
 
@@ -21,7 +22,6 @@ public sealed class LoggingPipelineBehaviour<TRequest, TResponse>
 
     #endregion
 
-
     public async Task<TResponse> Handle(
         TRequest request,
         RequestHandlerDelegate<TResponse> next,
@@ -29,6 +29,7 @@ public sealed class LoggingPipelineBehaviour<TRequest, TResponse>
     )
     {
         var requestTypeName = request.GetType().Name;
+        var userId = request.Context.UserId;
         _logger.LogDebug("Starting execute request \"{requestType}\"", requestTypeName);
 
         var stopwatch = new Stopwatch();
@@ -41,9 +42,10 @@ public sealed class LoggingPipelineBehaviour<TRequest, TResponse>
             stopwatch.Stop();
 
             _logger.LogInformation(
-                "Request \"{requestType}\" was executed successfully. Elapsed: {elapsed} ms.",
+                "Request \"{requestType}\" was executed successfully. Elapsed: {elapsed} ms. UserId: {userId}",
                 requestTypeName,
-                stopwatch.ElapsedMilliseconds
+                stopwatch.ElapsedMilliseconds,
+                userId
             );
 
             return response;
@@ -56,21 +58,21 @@ public sealed class LoggingPipelineBehaviour<TRequest, TResponse>
             {
                 _logger.LogError(
                     internalException.InnerException,
-                    "{exceptionType} occurred while executing request \"{requestType}\". Elapsed: {elapsed} ms.",
+                    "{exceptionType} occurred while executing request \"{requestType}\". Elapsed: {elapsed} ms. UserId: {userId}",
                     e.GetType().Name,
                     requestTypeName,
-                    stopwatch.ElapsedMilliseconds
+                    stopwatch.ElapsedMilliseconds,
+                    userId
                 );
             }
             else if (e is ValidationException or DomainExceptionBase)
             {
-                stopwatch.Stop();
-
                 _logger.LogWarning(
-                    "{exceptionType} occurred while executing request \"{requestType}\". Elapsed: {elapsed} ms.",
+                    "{exceptionType} occurred while executing request \"{requestType}\". Elapsed: {elapsed} ms. UserId: {userId}",
                     e.GetType().Name,
                     requestTypeName,
-                    stopwatch.ElapsedMilliseconds
+                    stopwatch.ElapsedMilliseconds,
+                    userId
                 );
             }
 

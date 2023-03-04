@@ -1,6 +1,7 @@
 ﻿using Common.Core.Clock;
 using Common.Domain.Exceptions;
 using Common.Domain.ValidationRules;
+using DripChip.Domain.Requests;
 using DripChip.Entities;
 using FluentValidation;
 using MediatR;
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DripChip.Domain.Animals;
 
-public class CreateAnimal : IRequest<CreateAnimal.Response>
+public class CreateAnimal : RequestBase<CreateAnimal.Response>
 {
     public required List<long> AnimalTypeIds { get; set; }
     public required float Weight { get; set; }
