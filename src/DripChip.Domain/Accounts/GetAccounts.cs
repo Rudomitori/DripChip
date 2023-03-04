@@ -1,5 +1,6 @@
 ﻿using Common.Core.Extensions;
 using Common.Domain.ValidationRules;
+using DripChip.Domain.Requests;
 using DripChip.Entities;
 using FluentValidation;
 using MediatR;
@@ -7,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DripChip.Domain.Accounts;
 
-public sealed class GetAccounts : IRequest<GetAccounts.Response>
+public sealed class GetAccounts : RequestBase<GetAccounts.Response>
 {
     public List<int>? Ids { get; set; }
     public string? FirstName { get; set; }

@@ -1,5 +1,6 @@
 ﻿using Common.Core.Extensions;
 using Common.Domain.ValidationRules;
+using DripChip.Domain.Requests;
 using DripChip.Entities;
 using FluentValidation;
 using MediatR;
@@ -7,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DripChip.Domain.Animals;
 
-public sealed class GetAnimals : IRequest<GetAnimals.Response>
+public sealed class GetAnimals : RequestBase<GetAnimals.Response>
 {
     public List<long>? Ids { get; set; }
     public DateTime? MinChippingDateTime { get; set; }

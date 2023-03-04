@@ -3,6 +3,7 @@ using DripChip.WebApi.Setup.Auth;
 using DripChip.WebApi.Setup.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddJsonFile("appsettings.Personal.json", true);
 
 builder.SetupControllers();
 builder.SetupSwagger();

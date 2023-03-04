@@ -1,5 +1,6 @@
 ﻿using Common.Domain.Exceptions;
 using Common.Domain.ValidationRules;
+using DripChip.Domain.Requests;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,7 @@ using Location = DripChip.Entities.Location;
 
 namespace DripChip.Domain.Locations.Requests;
 
-public sealed class UpdateLocation : IRequest<UpdateLocation.Response>
+public sealed class UpdateLocation : RequestBase<UpdateLocation.Response>
 {
     public required long Id { get; set; }
     public required Point Coordinates { get; set; }

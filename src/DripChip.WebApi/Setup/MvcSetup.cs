@@ -10,6 +10,7 @@ public static class MvcSetup
     public static WebApplicationBuilder SetupControllers(this WebApplicationBuilder builder)
     {
         builder.Services.AddControllers();
+        builder.Services.AddHttpContextAccessor();
         builder.Services.AddHealthChecks();
         builder.Services.Configure<JsonOptions>(options =>
         {
@@ -26,9 +27,11 @@ public static class MvcSetup
         app.MapControllers();
     }
 
+    public const string HealthCheckRoute = "/health";
+
     public static void UseHealthCheckSetup(this WebApplication app)
     {
-        app.MapHealthChecks("/health");
+        app.MapHealthChecks(HealthCheckRoute);
     }
 
     public static WebApplicationBuilder SetupSwagger(this WebApplicationBuilder builder)

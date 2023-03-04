@@ -2,6 +2,7 @@ using Common.Core.Configuration;
 using Microsoft.Extensions.Options;
 using Serilog;
 using Serilog.Debugging;
+using Serilog.Events;
 using Serilog.Sinks.Elasticsearch;
 
 namespace DripChip.WebApi.Setup.Logging;
@@ -85,6 +86,17 @@ public static class LoggingSetup
     {
         app.UseSerilogRequestLogging(options =>
         {
+            options.GetLevel = (context, elapsed, exception) =>
+            {
+                if (
+                    context.Request.Path.Value?.ToLower().StartsWith(MvcSetup.HealthCheckRoute)
+                    is true
+                )
+                    return LogEventLevel.Verbose;
+
+                return LogEventLevel.Information;
+            };
+
             options.EnrichDiagnosticContext = (context, httpContext) =>
             {
                 context.Set("RemoteIp", httpContext.Connection.RemoteIpAddress);

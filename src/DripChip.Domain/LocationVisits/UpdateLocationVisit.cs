@@ -1,5 +1,6 @@
 ﻿using Common.Domain.Exceptions;
 using Common.Domain.ValidationRules;
+using DripChip.Domain.Requests;
 using DripChip.Entities;
 using FluentValidation;
 using MediatR;
@@ -7,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DripChip.Domain.LocationVisits;
 
-public sealed class UpdateLocationVisit : IRequest<UpdateLocationVisit.Response>
+public sealed class UpdateLocationVisit : RequestBase<UpdateLocationVisit.Response>
 {
     public required long Id { get; set; }
     public required long AnimalId { get; set; }

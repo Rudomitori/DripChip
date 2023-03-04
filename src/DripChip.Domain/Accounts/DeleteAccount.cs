@@ -1,5 +1,6 @@
 ﻿using Common.Domain.Exceptions;
 using Common.Domain.ValidationRules;
+using DripChip.Domain.Requests;
 using DripChip.Entities;
 using FluentValidation;
 using FluentValidation.Results;
@@ -9,10 +10,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DripChip.Domain.Accounts;
 
-public sealed class DeleteAccount : IRequest<DeleteAccount.Response>
+public sealed class DeleteAccount : RequestBase<DeleteAccount.Response>
 {
     public required int Id { get; set; }
-    public required int CurrentAccountId { get; set; }
 
     public sealed class Response
     {
@@ -47,7 +47,7 @@ public sealed class DeleteAccount : IRequest<DeleteAccount.Response>
             CancellationToken cancellationToken
         )
         {
-            if (request.Id != request.CurrentAccountId)
+            if (request.Id != request.Context.UserId)
                 throw new ForbiddenException($"You cannot delete account with id {request.Id}");
 
             var dbResponse = await _dbContext

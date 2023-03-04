@@ -1,6 +1,7 @@
 using Common.Core.Clock;
 using DripChip.Domain.Accounts;
 using DripChip.Domain.PipelineBehaviors;
+using DripChip.WebApi.PipelineBehaviors.RequestContext;
 using FluentValidation;
 using MediatR;
 
@@ -12,6 +13,10 @@ public static class DomainSetup
     {
         builder.Services.AddValidatorsFromAssembly(typeof(CreateAccount).Assembly);
         builder.Services.AddMediatR(typeof(CreateAccount));
+        builder.Services.AddScoped(
+            typeof(IPipelineBehavior<,>),
+            typeof(RequestContextProvidingBehavior<,>)
+        );
         builder.Services.AddScoped(
             typeof(IPipelineBehavior<,>),
             typeof(LoggingPipelineBehaviour<,>)

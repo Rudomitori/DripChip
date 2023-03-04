@@ -1,4 +1,5 @@
 ﻿using Common.Domain.Exceptions;
+using DripChip.Domain.Requests;
 using DripChip.Entities;
 using FluentValidation;
 using FluentValidation.Results;
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DripChip.Domain.Accounts;
 
-public sealed class CreateAccount : IRequest<CreateAccount.Response>
+public sealed class CreateAccount : RequestBase<CreateAccount.Response>
 {
     public required string FirstName { get; set; }
     public required string LastName { get; set; }

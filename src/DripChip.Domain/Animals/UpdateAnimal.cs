@@ -2,6 +2,7 @@
 using Common.Core.Clock;
 using Common.Domain.Exceptions;
 using Common.Domain.ValidationRules;
+using DripChip.Domain.Requests;
 using DripChip.Entities;
 using FluentValidation;
 using MediatR;
@@ -9,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DripChip.Domain.Animals;
 
-public class UpdateAnimal : IRequest<UpdateAnimal.Response>
+public class UpdateAnimal : RequestBase<UpdateAnimal.Response>
 {
     public required long Id { get; set; }
     public float? Weight { get; set; }
@@ -49,6 +50,7 @@ public class UpdateAnimal : IRequest<UpdateAnimal.Response>
         {
             var animal = await _dbContext
                 .Set<Animal>()
+                .AsSplitQuery()
                 .Include(x => x.AnimalType2Animals)
                 .Include(x => x.LocationVisits)
                 .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
@@ -56,7 +58,7 @@ public class UpdateAnimal : IRequest<UpdateAnimal.Response>
             if (animal is null)
                 throw new NotFoundException($"Animal with id {request.Id} was not found");
 
-            if (request.ChipperId is { } chipperId)
+            if (request.ChipperId is { } chipperId && animal.ChipperId != chipperId)
             {
                 var accountWasFound = await _dbContext
                     .Set<Account>()
@@ -68,7 +70,10 @@ public class UpdateAnimal : IRequest<UpdateAnimal.Response>
                 animal.ChipperId = chipperId;
             }
 
-            if (request.ChippingLocationId is { } chippingLocationId)
+            if (
+                request.ChippingLocationId is { } chippingLocationId
+                && animal.ChippingLocationId != chippingLocationId
+            )
             {
                 if (animal.LocationVisits!.FirstOrDefault()?.LocationId == chippingLocationId)
                     throw new ValidationException(
