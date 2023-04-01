@@ -12,7 +12,7 @@ namespace DripChip.Domain.Animals;
 
 public class UpdateAnimal : RequestBase<UpdateAnimal.Response>
 {
-    public required long Id { get; set; }
+    public long Id { get; set; }
     public float? Weight { get; set; }
     public float? Height { get; set; }
     public float? Length { get; set; }
@@ -25,7 +25,7 @@ public class UpdateAnimal : RequestBase<UpdateAnimal.Response>
 
     public sealed class Response
     {
-        public required Animal Animal { get; set; }
+        public Animal Animal { get; set; }
     }
 
     public sealed class Handler : IRequestHandler<UpdateAnimal, Response>
@@ -157,7 +157,7 @@ public class UpdateAnimal : RequestBase<UpdateAnimal.Response>
                         => throw new ValidationException("Animal can not be resurrected"),
                     (Entities.LifeStatus.Dead, Entities.LifeStatus.Dead)
                         => (Entities.LifeStatus.Dead, animal.DeathDateTime),
-                    _ => throw new UnreachableException()
+                    _ => throw new ArgumentOutOfRangeException()
                 };
             }
 

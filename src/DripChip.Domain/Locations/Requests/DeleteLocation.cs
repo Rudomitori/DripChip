@@ -10,7 +10,7 @@ namespace DripChip.Domain.Locations.Requests;
 
 public sealed class DeleteLocation : RequestBase<DeleteLocation.Responce>
 {
-    public required long Id { get; set; }
+    public long Id { get; set; }
 
     public sealed class Responce { }
 

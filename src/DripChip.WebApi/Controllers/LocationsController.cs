@@ -50,8 +50,8 @@ public sealed class LocationsController : ControllerBase
 
     public sealed class CreateLocationRequestDto
     {
-        public required double Latitude { get; set; }
-        public required double Longitude { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
     }
 
     [Authorize]
@@ -69,8 +69,8 @@ public sealed class LocationsController : ControllerBase
 
     public sealed class UpdateLocationRequestDto
     {
-        public required double Latitude { get; set; }
-        public required double Longitude { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
     }
 
     [Authorize]

@@ -7,9 +7,9 @@ namespace DripChip.WebApi.ApiModel;
 
 public sealed class ApiLocation
 {
-    public required long Id { get; set; }
-    public required double Latitude { get; set; }
-    public required double Longitude { get; set; }
+    public long Id { get; set; }
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
 
     public static implicit operator ApiLocation(Location location) =>
         new ApiLocation

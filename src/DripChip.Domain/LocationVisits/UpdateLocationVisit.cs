@@ -10,13 +10,13 @@ namespace DripChip.Domain.LocationVisits;
 
 public sealed class UpdateLocationVisit : RequestBase<UpdateLocationVisit.Response>
 {
-    public required long Id { get; set; }
-    public required long AnimalId { get; set; }
-    public required long LocationId { get; set; }
+    public long Id { get; set; }
+    public long AnimalId { get; set; }
+    public long LocationId { get; set; }
 
     public sealed class Response
     {
-        public required LocationVisit LocationVisit { get; set; }
+        public LocationVisit LocationVisit { get; set; }
     }
 
     public sealed class Handler : IRequestHandler<UpdateLocationVisit, Response>

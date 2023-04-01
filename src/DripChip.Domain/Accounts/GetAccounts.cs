@@ -15,12 +15,12 @@ public sealed class GetAccounts : RequestBase<GetAccounts.Response>
     public string? LastName { get; set; }
     public string? Email { get; set; }
 
-    public required int Offset { get; set; }
-    public required int Size { get; set; }
+    public int Offset { get; set; }
+    public int Size { get; set; }
 
     public sealed class Response
     {
-        public required List<Account> Accounts { get; set; }
+        public List<Account> Accounts { get; set; }
     }
 
     public sealed class Handler : IRequestHandler<GetAccounts, Response>

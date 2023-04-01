@@ -12,11 +12,11 @@ namespace DripChip.Domain.Accounts;
 
 public sealed class DeleteAccount : RequestBase<DeleteAccount.Response>
 {
-    public required int Id { get; set; }
+    public int Id { get; set; }
 
     public sealed class Response
     {
-        public required Account Account { get; set; }
+        public Account Account { get; set; }
     }
 
     public sealed class Validator : AbstractValidator<DeleteAccount>

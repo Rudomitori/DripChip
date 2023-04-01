@@ -11,11 +11,11 @@ namespace DripChip.Domain.Locations.Requests;
 
 public sealed class CreateLocation : RequestBase<CreateLocation.Response>
 {
-    public required Point Coordinates { get; set; }
+    public Point Coordinates { get; set; }
 
     public sealed class Response
     {
-        public required Location Location { get; set; }
+        public Location Location { get; set; }
     }
 
     public sealed class Handler : IRequestHandler<CreateLocation, Response>

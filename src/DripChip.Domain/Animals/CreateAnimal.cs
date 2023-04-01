@@ -11,17 +11,17 @@ namespace DripChip.Domain.Animals;
 
 public class CreateAnimal : RequestBase<CreateAnimal.Response>
 {
-    public required List<long> AnimalTypeIds { get; set; }
-    public required float Weight { get; set; }
-    public required float Length { get; set; }
-    public required float Height { get; set; }
-    public required Gender Gender { get; set; }
-    public required int ChipperId { get; set; }
-    public required long ChippingLocationId { get; set; }
+    public List<long> AnimalTypeIds { get; set; }
+    public float Weight { get; set; }
+    public float Length { get; set; }
+    public float Height { get; set; }
+    public Gender Gender { get; set; }
+    public int ChipperId { get; set; }
+    public long ChippingLocationId { get; set; }
 
     public sealed class Response
     {
-        public required Animal Animal { get; set; }
+        public Animal Animal { get; set; }
     }
 
     public sealed class Handler : IRequestHandler<CreateAnimal, Response>

@@ -72,8 +72,8 @@ public class AnimalsController : ControllerBase
         public long? ChippingLocationId { get; set; }
         public LifeStatus? LifeStatus { get; set; }
         public Gender? Gender { get; set; }
-        public required int From { get; set; } = 0;
-        public required int Size { get; set; } = 10;
+        public int From { get; set; } = 0;
+        public int Size { get; set; } = 10;
     }
 
     [Authorize]
@@ -98,13 +98,13 @@ public class AnimalsController : ControllerBase
 
     public sealed class CreateAnimalRequestDto
     {
-        public required List<long> AnimalTypes { get; set; }
-        public required float Weight { get; set; }
-        public required float Height { get; set; }
-        public required float Length { get; set; }
-        public required Gender Gender { get; set; }
-        public required int ChipperId { get; set; }
-        public required int ChippingLocationId { get; set; }
+        public List<long> AnimalTypes { get; set; }
+        public float Weight { get; set; }
+        public float Height { get; set; }
+        public float Length { get; set; }
+        public Gender Gender { get; set; }
+        public int ChipperId { get; set; }
+        public int ChippingLocationId { get; set; }
     }
 
     [Authorize]
@@ -130,13 +130,13 @@ public class AnimalsController : ControllerBase
 
     public sealed class UpdateAnimalRequestDto
     {
-        public required float Weight { get; set; }
-        public required float Length { get; set; }
-        public required float Height { get; set; }
-        public required Gender Gender { get; set; }
-        public required LifeStatus LifeStatus { get; set; }
-        public required int ChipperId { get; set; }
-        public required long ChippingLocationId { get; set; }
+        public float Weight { get; set; }
+        public float Length { get; set; }
+        public float Height { get; set; }
+        public Gender Gender { get; set; }
+        public LifeStatus LifeStatus { get; set; }
+        public int ChipperId { get; set; }
+        public long ChippingLocationId { get; set; }
     }
 
     [Authorize]
@@ -182,8 +182,8 @@ public class AnimalsController : ControllerBase
 
     public sealed class ReplaceTypeForAnimalRequestDto
     {
-        public required long OldTypeId { get; set; }
-        public required long NewTypeId { get; set; }
+        public long OldTypeId { get; set; }
+        public long NewTypeId { get; set; }
     }
 
     [Authorize]
@@ -267,8 +267,8 @@ public class AnimalsController : ControllerBase
 
     public sealed class ReplaceVisitedLocationDto
     {
-        public required long VisitedLocationPointId { get; set; }
-        public required long LocationPointId { get; set; }
+        public long VisitedLocationPointId { get; set; }
+        public long LocationPointId { get; set; }
     }
 
     [Authorize]

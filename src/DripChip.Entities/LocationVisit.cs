@@ -10,5 +10,5 @@ public sealed class LocationVisit
     public long LocationId { get; set; }
     public Location? Location { get; set; }
 
-    public required DateTime VisitedAt { get; set; }
+    public DateTime VisitedAt { get; set; }
 }

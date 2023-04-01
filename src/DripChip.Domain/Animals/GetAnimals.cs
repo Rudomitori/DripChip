@@ -17,12 +17,12 @@ public sealed class GetAnimals : RequestBase<GetAnimals.Response>
     public long? ChippingLocationId { get; set; }
     public LifeStatus? LifeStatus { get; set; }
     public Gender? Gender { get; set; }
-    public required int Offset { get; set; }
-    public required int Size { get; set; }
+    public int Offset { get; set; }
+    public int Size { get; set; }
 
     public sealed class Response
     {
-        public required List<Animal> Animals { get; set; }
+        public List<Animal> Animals { get; set; }
     }
 
     public sealed class Handler : IRequestHandler<GetAnimals, Response>

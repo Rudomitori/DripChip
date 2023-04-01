@@ -10,12 +10,12 @@ namespace DripChip.Domain.AnimalTypes;
 
 public sealed class UpdateAnimalType : RequestBase<UpdateAnimalType.Response>
 {
-    public required long Id { get; set; }
-    public required string Type { get; set; }
+    public long Id { get; set; }
+    public string Type { get; set; }
 
     public sealed class Response
     {
-        public required AnimalType AnimalType { get; set; }
+        public AnimalType AnimalType { get; set; }
     }
 
     public sealed class Handler : IRequestHandler<UpdateAnimalType, Response>

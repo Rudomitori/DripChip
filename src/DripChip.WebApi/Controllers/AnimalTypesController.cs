@@ -47,7 +47,7 @@ public class AnimalTypesController : ControllerBase
 
     public sealed class CreateAnimalTypeRequestDto
     {
-        public required string Type { get; set; }
+        public string Type { get; set; }
     }
 
     [Authorize]
@@ -61,7 +61,7 @@ public class AnimalTypesController : ControllerBase
 
     public sealed class UpdateAnimalTypeRequestDto
     {
-        public required string Type { get; set; }
+        public string Type { get; set; }
     }
 
     [Authorize]

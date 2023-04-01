@@ -12,12 +12,12 @@ namespace DripChip.Domain.Locations.Requests;
 
 public sealed class UpdateLocation : RequestBase<UpdateLocation.Response>
 {
-    public required long Id { get; set; }
-    public required Point Coordinates { get; set; }
+    public long Id { get; set; }
+    public Point Coordinates { get; set; }
 
     public sealed class Response
     {
-        public required Entities.Location Location { get; set; }
+        public Entities.Location Location { get; set; }
     }
 
     public sealed class Handler : IRequestHandler<UpdateLocation, Response>

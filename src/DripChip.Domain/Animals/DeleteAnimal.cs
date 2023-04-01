@@ -10,7 +10,7 @@ namespace DripChip.Domain.Animals;
 
 public sealed class DeleteAnimal : RequestBase<DeleteAnimal.Response>
 {
-    public required long Id { get; set; }
+    public long Id { get; set; }
 
     public sealed class Response { }
 

@@ -14,12 +14,12 @@ public sealed class GetLocationVisits : RequestBase<GetLocationVisits.Response>
     public long? VisitedByAnimalId { get; set; }
     public DateTime? MinVisitedAt { get; set; }
     public DateTime? MaxVisitedAt { get; set; }
-    public required int Offset { get; set; }
-    public required int Size { get; set; }
+    public int Offset { get; set; }
+    public int Size { get; set; }
 
     public sealed class Response
     {
-        public required List<LocationVisit> LocationVisits { get; set; }
+        public List<LocationVisit> LocationVisits { get; set; }
     }
 
     public sealed class Handler : IRequestHandler<GetLocationVisits, Response>

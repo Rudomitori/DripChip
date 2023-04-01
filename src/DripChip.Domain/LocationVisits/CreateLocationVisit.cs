@@ -11,12 +11,12 @@ namespace DripChip.Domain.LocationVisits;
 
 public sealed class CreateLocationVisit : RequestBase<CreateLocationVisit.Response>
 {
-    public required long AnimalId { get; set; }
-    public required long LocationId { get; set; }
+    public long AnimalId { get; set; }
+    public long LocationId { get; set; }
 
     public sealed class Response
     {
-        public required LocationVisit LocationVisit { get; set; }
+        public LocationVisit LocationVisit { get; set; }
     }
 
     public sealed class Handler : IRequestHandler<CreateLocationVisit, Response>

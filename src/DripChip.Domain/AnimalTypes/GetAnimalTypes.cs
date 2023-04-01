@@ -14,7 +14,7 @@ public sealed class GetAnimalTypes : RequestBase<GetAnimalTypes.Response>
 
     public sealed class Response
     {
-        public required List<AnimalType> AnimalTypes { get; set; }
+        public List<AnimalType> AnimalTypes { get; set; }
     }
 
     public sealed class Handler : IRequestHandler<GetAnimalTypes, Response>

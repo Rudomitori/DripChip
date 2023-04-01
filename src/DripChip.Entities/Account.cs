@@ -5,11 +5,11 @@ namespace DripChip.Entities;
 
 public class Account : IdentityUser<int>
 {
-    public required string FirstName { get; set; }
-    public required string LastName { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
 
     private string _email;
-    public override required string Email
+    public override string Email
     {
         get => _email;
         set => _userName = _email = value;

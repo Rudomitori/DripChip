@@ -7,9 +7,9 @@ namespace DripChip.WebApi.ApiModel;
 
 public sealed class ApiLocationVisit
 {
-    public required long Id { get; set; }
-    public required DateTime DateTimeOfVisitLocationPoint { get; set; }
-    public required long LocationPointId { get; set; }
+    public long Id { get; set; }
+    public DateTime DateTimeOfVisitLocationPoint { get; set; }
+    public long LocationPointId { get; set; }
 
     public static implicit operator ApiLocationVisit(LocationVisit visit) =>
         new ApiLocationVisit

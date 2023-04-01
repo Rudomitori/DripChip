@@ -4,5 +4,5 @@ namespace DripChip.WebApi.PipelineBehaviors.RequestContext;
 
 public sealed class WebApiRequestContext : IRequestContext
 {
-    public required int? UserId { get; init; }
+    public int? UserId { get; init; }
 }

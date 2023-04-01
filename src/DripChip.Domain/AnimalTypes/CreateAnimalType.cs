@@ -9,11 +9,11 @@ namespace DripChip.Domain.AnimalTypes;
 
 public sealed class CreateAnimalType : RequestBase<CreateAnimalType.Response>
 {
-    public required string Type { get; set; }
+    public string Type { get; set; }
 
     public sealed class Response
     {
-        public required AnimalType AnimalType { get; set; }
+        public AnimalType AnimalType { get; set; }
     }
 
     public sealed class Handler : IRequestHandler<CreateAnimalType, Response>

@@ -6,5 +6,5 @@ public sealed class Location
 {
     public long Id { get; set; }
 
-    public required Point Coordinates { get; set; }
+    public Point Coordinates { get; set; }
 }

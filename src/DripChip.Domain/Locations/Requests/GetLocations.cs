@@ -13,7 +13,7 @@ public sealed class GetLocations : RequestBase<GetLocations.Responce>
 
     public sealed class Responce
     {
-        public required List<Location> Locations { get; set; }
+        public List<Location> Locations { get; set; }
     }
 
     public sealed class Handler : IRequestHandler<GetLocations, Responce>

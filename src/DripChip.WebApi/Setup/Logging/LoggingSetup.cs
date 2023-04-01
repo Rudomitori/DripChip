@@ -19,7 +19,9 @@ public static class LoggingSetup
             builder.Configuration.GetSection(SerilogSelfLogOptions.Position)
         );
 
-        var serilogSelfLogOptions = builder.Configuration.Create<SerilogSelfLogOptions>();
+        var serilogSelfLogOptions = builder.Configuration.Create<SerilogSelfLogOptions>(
+            SerilogSelfLogOptions.Position
+        );
 
         if (serilogSelfLogOptions.IsEnabled)
         {
