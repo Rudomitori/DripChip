@@ -11,6 +11,7 @@ public sealed class ApiAccount
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Email { get; set; }
+    public Role Role { get; set; }
 
     public static implicit operator ApiAccount(Account account) =>
         new()
@@ -19,5 +20,6 @@ public sealed class ApiAccount
             FirstName = account.FirstName!,
             LastName = account.LastName!,
             Email = account.Email!,
+            Role = account.Role
         };
 }

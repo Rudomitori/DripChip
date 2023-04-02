@@ -8,6 +8,8 @@ public class Account : IdentityUser<int>
     public string FirstName { get; set; }
     public string LastName { get; set; }
 
+    public Role Role { get; set; }
+
     private string _email;
     public override string Email
     {
@@ -28,6 +30,7 @@ public class Account : IdentityUser<int>
             new Claim("id", Id.ToString()),
             new Claim("email", Email),
             new Claim("firstName", FirstName),
-            new Claim("lastName", LastName)
+            new Claim("lastName", LastName),
+            new Claim("role", Role.ToString())
         };
 }

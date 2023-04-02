@@ -17,6 +17,7 @@ public sealed class UpdateAccount : RequestBase<UpdateAccount.Response>
     public string LastName { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
+    public Role Role { get; set; }
 
     public sealed class Response
     {
@@ -53,8 +54,8 @@ public sealed class UpdateAccount : RequestBase<UpdateAccount.Response>
             CancellationToken cancellationToken
         )
         {
-            if (request.Id != request.Context.UserId)
-                throw new ForbiddenException($"You cannot delete account with id {request.Id}");
+            if (request.Id != request.Context.UserId && request.Context.UserRole is not Role.Admin)
+                throw new ForbiddenException($"You cannot update account with id {request.Id}");
 
             var account = await _userManager.Users.FirstOrDefaultAsync(
                 x => x.Id == request.Id,
@@ -63,6 +64,9 @@ public sealed class UpdateAccount : RequestBase<UpdateAccount.Response>
 
             if (account is null)
                 throw new NotFoundException($"Account with id {request.Id} was not found");
+
+            if (account.Role != request.Role && request.Context.UserRole is not Role.Admin)
+                throw new ForbiddenException($"Only admin can change role");
 
             var emailIsAlreadyRegistered =
                 account.NormalizedEmail != _userManager.NormalizeEmail(request.Email)

@@ -15,6 +15,7 @@ public sealed class CreateAccount : RequestBase<CreateAccount.Response>
     public string LastName { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
+    public Role Role { get; set; }
 
     public sealed class Response
     {
@@ -50,6 +51,11 @@ public sealed class CreateAccount : RequestBase<CreateAccount.Response>
             CancellationToken cancellationToken
         )
         {
+            if (request.Role is not Role.User && request.Context.UserRole is not Role.Admin)
+                throw new ForbiddenException(
+                    $"Only admin can create an account with role {request.Role}"
+                );
+
             var emailIsAlreadyRegistered = await _userManager.Users.AnyAsync(
                 x => x.NormalizedEmail == _userManager.NormalizeEmail(request.Email),
                 cancellationToken

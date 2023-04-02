@@ -1,5 +1,6 @@
 ﻿using Common.Domain.Exceptions;
 using DripChip.Domain.Accounts;
+using DripChip.Entities;
 using DripChip.WebApi.ApiModel;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -82,7 +83,8 @@ public sealed class AccountsController : ControllerBase
                 Email = dto.Email,
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
-                Password = dto.Password
+                Password = dto.Password,
+                Role = dto.Role
             }
         );
 
@@ -95,6 +97,7 @@ public sealed class AccountsController : ControllerBase
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public Role Role { get; set; }
     }
 
     [Authorize]

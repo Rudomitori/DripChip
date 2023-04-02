@@ -47,7 +47,7 @@ public sealed class DeleteAccount : RequestBase<DeleteAccount.Response>
             CancellationToken cancellationToken
         )
         {
-            if (request.Id != request.Context.UserId)
+            if (request.Id != request.Context.UserId && request.Context.UserRole is not Role.Admin)
                 throw new ForbiddenException($"You cannot delete account with id {request.Id}");
 
             var dbResponse = await _dbContext
