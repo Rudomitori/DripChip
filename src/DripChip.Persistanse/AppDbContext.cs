@@ -25,4 +25,7 @@ public sealed class AppDbContext : DbContext
 
         base.OnModelCreating(modelBuilder);
     }
+
+    public IQueryable<T> FromValues<T>(IEnumerable<T> values) =>
+        Database.SqlQuery<T>($"select unnest({values}) as \"Value\"");
 }

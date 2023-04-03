@@ -16,6 +16,7 @@ builder.SetupDomain();
 var app = builder.Build();
 
 await app.ApplyMigrations();
+await app.SeedDb();
 app.UseHealthCheckSetup();
 app.UseLoggingSetup();
 app.UseExceptionHandlingSetup();

@@ -1,4 +1,6 @@
+using DripChip.Entities;
 using DripChip.Persistence;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite;
 using NetTopologySuite.Geometries;
@@ -44,5 +46,48 @@ public static class DbSetup
         var appDbContext = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
         await appDbContext.Database.EnsureDeletedAsync();
         await appDbContext.Database.EnsureCreatedAsync();
+    }
+
+    public static async Task SeedDb(this WebApplication app)
+    {
+        using var serviceScope = app.Services.CreateScope();
+        var appDbContext = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
+        var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<Account>>();
+        var logger = serviceScope.ServiceProvider
+            .GetRequiredService<ILoggerFactory>()
+            .CreateLogger("DbSetup");
+
+        var rolesToSeed = await appDbContext
+            .FromValues(new[] { Role.Admin, Role.Chipper, Role.User })
+            .Where(x => !appDbContext.Set<Account>().Any(y => y.Role == x))
+            .ToListAsync();
+
+        foreach (var role in rolesToSeed.OrderByDescending(x => x))
+        {
+            var newAccount = new Account
+            {
+                FirstName = $"{role.ToString().ToLower()}FirstName",
+                LastName = $"{role.ToString().ToLower()}LastName",
+                Email = $"{role.ToString().ToLower()}@simbirsoft.com",
+                Role = role
+            };
+
+            var identityResult = await userManager.CreateAsync(newAccount, "qwerty123");
+            if (identityResult.Succeeded)
+                logger.LogInformation(
+                    "Account with email \"{email}\" and role \"{role}\" was seeded successfully",
+                    newAccount.Email,
+                    role
+                );
+            else
+                logger.LogError(
+                    "Account for role \"{role}\" wasn't seeded because: \n\t{errors}",
+                    role,
+                    string.Join(
+                        "\n\t",
+                        identityResult.Errors.Select(x => $"[{x.Code}] {x.Description}")
+                    )
+                );
+        }
     }
 }
