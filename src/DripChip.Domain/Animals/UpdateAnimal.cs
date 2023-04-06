@@ -48,6 +48,9 @@ public class UpdateAnimal : RequestBase<UpdateAnimal.Response>
             CancellationToken cancellationToken
         )
         {
+            if (request.Context.UserRole is not Role.Admin and not Role.Chipper)
+                throw new ForbiddenException("You can not update animals");
+
             var animal = await _dbContext
                 .Set<Animal>()
                 .AsSplitQuery()

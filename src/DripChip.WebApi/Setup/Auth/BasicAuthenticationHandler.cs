@@ -73,9 +73,6 @@ public sealed class BasicAuthenticationHandler : AuthenticationHandler<Authentic
             if (!verified)
                 throw new UnauthorizedException("The username or password is not correct.");
 
-            // if (!verified)
-            //     return AuthenticateResult.Fail("The username or password is not correct.");
-
             var identity = new ClaimsIdentity(account.GetClaims(), Scheme.Name);
             var principal = new ClaimsPrincipal(identity);
             return AuthenticateResult.Success(new AuthenticationTicket(principal, Scheme.Name));

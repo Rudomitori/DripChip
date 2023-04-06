@@ -2,6 +2,7 @@
 using DripChip.Domain.Accounts;
 using DripChip.Entities;
 using DripChip.WebApi.ApiModel;
+using DripChip.WebApi.Setup.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DripChip.WebApi.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public sealed class AccountsController : ControllerBase
@@ -69,7 +71,32 @@ public sealed class AccountsController : ControllerBase
         public int Size { get; set; } = 10;
     }
 
-    [Authorize]
+    [Roles(Role.Admin)]
+    [HttpPost]
+    public async Task<ApiAccount> CreateAccount([FromBody] CreateAccountRequestDto dto)
+    {
+        var response = await _mediator.Send(
+            new CreateAccount
+            {
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                Email = dto.Email,
+                Password = dto.Password,
+                Role = dto.Role
+            }
+        );
+
+        return response.Account;
+    }
+
+    public record CreateAccountRequestDto(
+        string FirstName,
+        string LastName,
+        string Email,
+        string Password,
+        Role Role
+    );
+
     [HttpPut("{accountId:int}")]
     public async Task<ApiAccount> UpdateAccount(
         int accountId,
@@ -100,7 +127,6 @@ public sealed class AccountsController : ControllerBase
         public Role Role { get; set; }
     }
 
-    [Authorize]
     [HttpDelete("{accountId:int}")]
     public async Task DeleteAccount(int accountId)
     {

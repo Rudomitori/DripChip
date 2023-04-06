@@ -36,6 +36,9 @@ public sealed class UpdateAnimalType : RequestBase<UpdateAnimalType.Response>
             CancellationToken cancellationToken
         )
         {
+            if (request.Context.UserRole is not Role.Admin and not Role.Chipper)
+                throw new ForbiddenException("You can not update animal types");
+
             var animalType = await _dbContext
                 .Set<AnimalType>()
                 .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);

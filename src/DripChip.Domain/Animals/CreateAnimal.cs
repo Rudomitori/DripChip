@@ -44,6 +44,9 @@ public class CreateAnimal : RequestBase<CreateAnimal.Response>
             CancellationToken cancellationToken
         )
         {
+            if (request.Context.UserRole is not Role.Admin and not Role.Chipper)
+                throw new ForbiddenException("You can not create animals");
+
             var foundAnimalTypesCount = await _dbContext
                 .Set<AnimalType>()
                 .CountAsync(x => request.AnimalTypeIds.Contains(x.Id), cancellationToken);

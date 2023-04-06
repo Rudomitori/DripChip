@@ -32,6 +32,9 @@ public sealed class DeleteLocation : RequestBase<DeleteLocation.Responce>
             CancellationToken cancellationToken
         )
         {
+            if (request.Context.UserRole is not Role.Admin)
+                throw new ForbiddenException("Only admin can delete locations");
+
             var location = await _dbContext
                 .Set<Location>()
                 .Select(

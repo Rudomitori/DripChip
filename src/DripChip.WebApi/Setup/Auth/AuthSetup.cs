@@ -24,7 +24,10 @@ public static class AuthSetup
             .AddAuthentication("Basic")
             .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("Basic", null);
 
-        builder.Services.AddAuthorization();
+        builder.Services.AddAuthorization(options =>
+        {
+            NotAuthorizedAttribute.AddPolicy(options);
+        });
 
         return builder;
     }

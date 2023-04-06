@@ -1,6 +1,7 @@
 ﻿using Common.Domain.Exceptions;
 using Common.Domain.ValidationRules;
 using DripChip.Domain.Requests;
+using DripChip.Entities;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,9 @@ public sealed class UpdateLocation : RequestBase<UpdateLocation.Response>
             CancellationToken cancellationToken
         )
         {
+            if (request.Context.UserRole is not Role.Admin and not Role.Chipper)
+                throw new ForbiddenException("You can not update locations");
+
             var location = await _dbContext
                 .Set<Location>()
                 .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);

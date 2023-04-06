@@ -2,6 +2,7 @@
 
 using DripChip.Domain.Accounts;
 using DripChip.WebApi.ApiModel;
+using DripChip.WebApi.Setup.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -22,14 +23,12 @@ public sealed class AuthController : ControllerBase
 
     #endregion
 
+    [NotAuthorized]
     [HttpPost("registration")]
     public async Task<ActionResult<ApiAccount>> Register(
         [FromBody] [BindRequired] RegisterRequestDto dto
     )
     {
-        if (HttpContext.User.Identity is { IsAuthenticated: true })
-            return Forbid();
-
         var response = await _mediator.Send(
             new CreateAccount
             {

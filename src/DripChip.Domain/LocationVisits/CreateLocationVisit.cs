@@ -39,6 +39,9 @@ public sealed class CreateLocationVisit : RequestBase<CreateLocationVisit.Respon
             CancellationToken cancellationToken
         )
         {
+            if (request.Context.UserRole is not Role.Admin and not Role.Chipper)
+                throw new ForbiddenException("You can not create location visits");
+
             var animal = await _dbContext
                 .Set<Animal>()
                 .AsNoTracking()

@@ -1,5 +1,6 @@
 ﻿using Common.Domain.Exceptions;
 using DripChip.Domain.Requests;
+using DripChip.Entities;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +21,7 @@ public sealed class CreateLocation : RequestBase<CreateLocation.Response>
 
     public sealed class Handler : IRequestHandler<CreateLocation, Response>
     {
-        #region Constractor and dependencies
+        #region Constructor and dependencies
 
         private readonly DbContext _dbContext;
         private readonly LocationOptions _locationOptions;
@@ -38,6 +39,9 @@ public sealed class CreateLocation : RequestBase<CreateLocation.Response>
             CancellationToken cancellationToken
         )
         {
+            if (request.Context.UserRole is not Role.Admin and not Role.Chipper)
+                throw new ForbiddenException("You can not create locations");
+
             var locationsAlreadyExists = await _dbContext
                 .Set<Location>()
                 .AnyAsync(

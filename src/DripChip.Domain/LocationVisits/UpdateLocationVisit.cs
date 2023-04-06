@@ -37,6 +37,9 @@ public sealed class UpdateLocationVisit : RequestBase<UpdateLocationVisit.Respon
             CancellationToken cancellationToken
         )
         {
+            if (request.Context.UserRole is not Role.Admin and not Role.Chipper)
+                throw new ForbiddenException("You can not update location visits");
+
             var animal = await _dbContext
                 .Set<Animal>()
                 .Include(x => x.LocationVisits!.OrderBy(y => y.VisitedAt))

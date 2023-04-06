@@ -32,6 +32,9 @@ public sealed class DeleteAnimalType : RequestBase<DeleteAnimalType.Response>
             CancellationToken cancellationToken
         )
         {
+            if (request.Context.UserRole is not Role.Admin)
+                throw new ForbiddenException("Only admin can delete animal types");
+
             var animalType = await _dbContext
                 .Set<AnimalType>()
                 .Select(

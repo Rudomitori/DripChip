@@ -1,4 +1,5 @@
 ﻿using Common.Core.Extensions;
+using Common.Domain.Exceptions;
 using Common.Domain.ValidationRules;
 using DripChip.Domain.Requests;
 using DripChip.Entities;
@@ -38,10 +39,24 @@ public sealed class GetAccounts : RequestBase<GetAccounts.Response>
 
         public async Task<Response> Handle(GetAccounts request, CancellationToken cancellationToken)
         {
+            var userId = request.Context.UserId!.Value;
             var queryable = _dbContext.Set<Account>().AsQueryable();
 
-            if (request.Ids is { })
-                queryable = queryable.Where(x => request.Ids.Contains(x.Id));
+            queryable = (request.Ids, request.Context.UserRole) switch
+            {
+                (not { }, Role.Admin) => queryable,
+                ({ } ids, Role.Admin) => queryable.Where(x => ids.Contains(x.Id)),
+                ({ } ids, _) when !ids.SequenceEqual(new[] { userId }) => 
+                    throw new ForbiddenException("You cannot read not your accounts"),
+                _ => queryable.Where(x => x.Id == userId)
+            };
+
+            var notAllowedFilterUsed = 
+                request.Context.UserRole is not Role.Admin 
+                    && request is not {FirstName: null, LastName: null, Email: null};
+
+            if (notAllowedFilterUsed)
+                throw new ForbiddenException("Only admin can use additional filters");
 
             if (request.FirstName is { })
                 queryable = queryable.Where(

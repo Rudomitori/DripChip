@@ -32,6 +32,9 @@ public sealed class DeleteAnimal : RequestBase<DeleteAnimal.Response>
             CancellationToken cancellationToken
         )
         {
+            if (request.Context.UserRole is not Role.Admin)
+                throw new ForbiddenException("Only admin can delete animals");
+
             var dbResponse = await _dbContext
                 .Set<Animal>()
                 .Select(x => new { Animal = x, HasLocationVisits = x.LocationVisits!.Any() })

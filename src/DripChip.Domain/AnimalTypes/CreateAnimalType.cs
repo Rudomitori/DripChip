@@ -34,6 +34,9 @@ public sealed class CreateAnimalType : RequestBase<CreateAnimalType.Response>
             CancellationToken cancellationToken
         )
         {
+            if (request.Context.UserRole is not Role.Admin and not Role.Chipper)
+                throw new ForbiddenException("You can not create animal types");
+
             var animalTypeAlreadyExists = await _dbContext
                 .Set<AnimalType>()
                 .AnyAsync(x => x.Type == request.Type, cancellationToken);

@@ -33,6 +33,9 @@ public sealed class DeleteLocationVisit : RequestBase<DeleteLocationVisit.Respon
             CancellationToken cancellationToken
         )
         {
+            if (request.Context.UserRole is not Role.Admin)
+                throw new ForbiddenException("Only admin can delete location visits");
+
             var animal = await _dbContext
                 .Set<Animal>()
                 .Include(x => x.LocationVisits!.OrderBy(y => y.VisitedAt))
