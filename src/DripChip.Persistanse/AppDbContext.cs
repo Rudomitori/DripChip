@@ -17,6 +17,7 @@ public sealed class AppDbContext : DbContext
         modelBuilder.Entity<Animal>();
         modelBuilder.Entity<AnimalType2Animal>().HasKey(x => new { x.AnimalTypeId, x.AnimalId });
         modelBuilder.Entity<LocationVisit>();
+        modelBuilder.Entity<Area>();
 
         modelBuilder
             .Entity<Location>()

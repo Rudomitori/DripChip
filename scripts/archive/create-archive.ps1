@@ -34,7 +34,7 @@ Copy-Item (Join-Path $repositoryRootPath "scripts/archive/assets/run-tests.ps1")
     -Destination (Join-Path $buildFolder "run-tests.ps1")
 
 Compress-Archive `
-    -Path (Join-Path $tempWorkDirPath "*") `
+    -Path (Get-ChildItem -Path $tempWorkDirPath -Force | Select-Object -ExpandProperty 'FullName')`
     -CompressionLevel "Fastest" `
     -DestinationPath "${archiveName}.zip" `
     -Force
